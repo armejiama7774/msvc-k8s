@@ -1,0 +1,43 @@
+services:
+  mysql:
+    container_name: mysql-container
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: embarkx
+      MYSQL_DATABASE: embarkx
+      MYSQL_USER: embarkx
+      MYSQL_PASSWORD: embarkx
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - mysql
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+  phpmyadmin:
+    container_name: phpmyadmin-container
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: ${PMA_USER:-root}
+      PMA_PASSWORD: ${PMA_PASSWORD:-embarkx}
+      MYSQL_ROOT_PASSWORD: embarkx
+    volumes:
+      - phpmyadmin:/sessions
+    ports:
+      - "8089:80"
+    networks:
+      - mysql
+    restart: unless-stopped
+    depends_on:
+      - mysql
+
+volumes:
+  mysql:
+  phpmyadmin:
+
+networks:
+  mysql:
+    driver: bridge

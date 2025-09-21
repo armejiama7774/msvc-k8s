@@ -1,0 +1,25 @@
+services:
+  phpmyadmin:
+    container_name: phpmyadmin-container
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3307
+      PMA_USER: ${PMA_USER:-root}
+      PMA_PASSWORD: ${PMA_PASSWORD:-embarkx}
+      MYSQL_ROOT_PASSWORD: embarkx
+    volumes:
+      - phpmyadmin:/sessions
+    ports:
+      - "8089:80"
+    networks:
+      - mysql
+    restart: unless-stopped
+
+volumes:
+  mysql:
+  phpmyadmin:
+
+networks:
+  mysql:
+    driver: bridge
