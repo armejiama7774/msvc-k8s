@@ -1,18 +1,5 @@
 version: "3.9"
 services:
-  mysql8:
-    container_name: mysql8
-    image: mysql:8
-    ports:
-      - "3307:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: sasa
-      MYSQL_DATABASE: msvc_usuarios
-    volumes:
-      - data-mysql:/var/lib/mysql
-    restart: always
-    networks:
-      - spring
   postgres14:
     container_name: postgres14
     image: postgres:14-alpine
@@ -26,28 +13,6 @@ services:
     restart: always
     networks:
       - spring
-
-  msvc-usuarios:
-    container_name: msvc-usuarios
-    image: aguzf/usuarios:latest
-#    build:
-#      context: ./
-#      dockerfile: ./msvc-usuarios/Dockerfile
-    ports:
-      - "8001:8001"
-    environment:
-      PORT: 8001
-      DB_HOST: mysql8:3306
-      DB_DATABASE: msvc_usuarios
-      DB_USERNAME: root
-      DB_PASSWORD: sasa
-      CURSOS_URL: msvc-cursos:8002
-    networks:
-      - spring
-    depends_on:
-      - mysql8
-    restart: always
-
   msvc-cursos:
     container_name: msvc-cursos
     image: aguzf/cursos:latest
@@ -62,7 +27,7 @@ services:
       DB_DATABASE: msvc_cursos
       DB_USERNAME: postgres
       DB_PASSWORD: sasa
-      USUARIOS_URL: msvc-usuarios:8001
+      USUARIOS_URL: ec2-54-227-65-77.compute-1.amazonaws.com:8001
     networks:
       - spring
     depends_on:
@@ -70,8 +35,6 @@ services:
       - msvc-usuarios
     restart: always
 volumes:
-  data-mysql:
-    name: data-mysql
   data-postgres:
     name: data-postgres
 

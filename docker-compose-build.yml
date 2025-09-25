@@ -28,10 +28,9 @@ services:
 
   msvc-usuarios:
     container_name: msvc-usuarios
-    image: maxinms2/usuarios:latest
-#    build:
-#      context: ./
-#      dockerfile: ./msvc-usuarios/Dockerfile
+    build:
+      context: ./
+      dockerfile: ./msvc-usuarios/Dockerfile
     ports:
       - "8001:8001"
     env_file: ./msvc-usuarios/.env
@@ -43,10 +42,9 @@ services:
 
   msvc-cursos:
     container_name: msvc-cursos
-    image: maxinms2/cursos:latest
-#    build:
-#      context: ./
-#      dockerfile: ./msvc-cursos/Dockerfile
+    build:
+      context: ./
+      dockerfile: ./msvc-cursos/Dockerfile
     ports:
       - "8002:8002"
     env_file:
